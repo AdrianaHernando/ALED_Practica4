@@ -60,7 +60,7 @@ public class EmergencyRoomGUI {
 	 * 
 	 * @return The EmergencyRoomGUI instance.
 	 */
-	public static EmergencyRoomGUI getInstance() {
+	public static EmergencyRoomGUI getInstance() {  //LO USAREMOS
 		if (instance == null) {
 			throw new IllegalStateException("EmergencyRoomGUI not yet initialized. Call initialize() first.");
 		}
@@ -88,11 +88,11 @@ public class EmergencyRoomGUI {
 	 * @param p The Patient.
 	 * @param t The Transfer.
 	 */
-	public void animateTransfer(Patient p, Transfer t) {
-		Position2D startPos = p.getPosition();
-		Area endArea = t.getTo();
-		Position2D endPos = endArea.getPosition();
-		int duration = t.getTime(); // Total duration in ms
+	public void animateTransfer(Patient p, Transfer t) { // LO USAREMOS
+		Position2D startPos = p.getPosition(); //defino como posición inicial del paciente, su posición actual
+		Area endArea = t.getTo(); //defino como area final del paciente, el área destino del Transfer
+		Position2D endPos = endArea.getPosition(); //defino como posición final del paciente, la posición del area destino del Transfer
+		int duration = t.getTime(); // Total duration in ms del Transfer
 
 		final int updateInterval = 20;
 		int steps = duration / updateInterval;
@@ -126,7 +126,7 @@ public class EmergencyRoomGUI {
 	 * Removes a Patient from the screen.
 	 * @param p The Patient.
 	 */
-	public void removePatient(Patient p) {
+	public void removePatient(Patient p) { // LO USAREMOS
 		patients.remove(p);
 		drawingPanel.repaint();
 	}

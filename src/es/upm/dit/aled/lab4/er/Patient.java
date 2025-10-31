@@ -1,6 +1,7 @@
 package es.upm.dit.aled.lab4.er;
 
 import java.awt.Color;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,7 +131,14 @@ public class Patient extends Thread {
 	 * movement is animated by the GUI and the index is increased by one.
 	 */
 	private void advanceProtocol() {
-		// TODO
+		// HECHO
+		Transfer transferActual = this.getProtocol().get(indexProtocol); //consigo la transferencia que debe hacer el paciente
+		EmergencyRoomGUI.getInstance().animateTransfer(this, transferActual); //ejecutar la animación de transferir al paciente
+		this.setLocation(transferActual.getTo()); //cambio la ubicacion actual del paciente al area donde se ha transferido
+		this.indexProtocol ++; //incremento en uno el indicie del protocolo, que me indica en qué punto del protocolo se encuentra el paciente
+		
+		//Traza para comprobar que funcione bien:
+		System.out.println("Se ha transferido el paciente "+ this.getNumber()+ "al área "+ this.getLocation()+ ", y se encuentra en el punto "+ this.indexProtocol+ " de su protocolo.");
 	}
 
 	/**
@@ -139,7 +147,13 @@ public class Patient extends Thread {
 	 * Area.
 	 */
 	private void attendedAtLocation() {
-		// TODO
+		// HECHO
+		try {
+			sleep (this.getLocation().getTime()); //paramos el thread el tiempo correspondiente al área donde se encuentra el paciente
+		} catch (InterruptedException e){
+			e.printStackTrace();
+		}
+			
 	}
 
 	/**
@@ -150,6 +164,13 @@ public class Patient extends Thread {
 	@Override
 	public void run() {
 		// TODO
+		while(this.indexProtocol <= this.getProtocol().size()) { //mientras el paciente se encuentre en un punto del protocolo menor al total de protocolos o el final
+			this.attendedAtLocation();
+			this.advanceProtocol();
+		} //Se sale del bucle tras el útimo Transfer del protocolo
+		this.attendedAtLocation(); //Espera en el ultimo area
+		EmergencyRoomGUI.getInstance().removePatient(this); //se elimina el paciente
+		
 	}
 
 }

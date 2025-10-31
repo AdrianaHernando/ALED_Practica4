@@ -18,7 +18,7 @@ import es.upm.dit.aled.lab4.er.gui.Position2D;
 public class Area {
 
 	private String name;
-	private int time;
+	private int time; //tiempo que tardará en ser atendido el paciente
 	private Position2D position;
 	private Color color;
 
