@@ -54,7 +54,7 @@ public class EmergencyRoom {
 	 * 
 	 * @return The List.
 	 */
-	public List<Area> getAreas() {
+	public List<Area> getAreas() { //FIJARME PORQUE ES EL GET DE UNA LISTA
 		Collection<Area> areas = this.areas.values();
 		return new ArrayList<Area>(areas);
 	}
@@ -123,7 +123,8 @@ public class EmergencyRoom {
 	 * @param patient The Patient.
 	 */
 	public void admit(Patient patient) {
-		// TODO
+		// HECHO
+		patient.start(); //Ejecuta el metodo run() del patient: realiza su protocolo completo.
 	}
 
 	/**
@@ -132,7 +133,14 @@ public class EmergencyRoom {
 	 * @param patient The Patient.
 	 */
 	public void waitForDischarge(Patient patient) {
-		// TODO
+		// HECHO
+		try {
+			// Espero a que termine el thread del paciente: cuando acabe el run().
+			patient.join(); 
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 }

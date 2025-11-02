@@ -138,7 +138,7 @@ public class Patient extends Thread {
 		this.indexProtocol ++; //incremento en uno el indicie del protocolo, que me indica en qué punto del protocolo se encuentra el paciente
 		
 		//Traza para comprobar que funcione bien:
-		System.out.println("Se ha transferido el paciente "+ this.getNumber()+ "al área "+ this.getLocation()+ ", y se encuentra en el punto "+ this.indexProtocol+ " de su protocolo.");
+		System.out.println("Se ha transferido el paciente "+ this.getNumber()+ " al área "+ this.getLocation()+ ", y se encuentra en el punto "+ this.indexProtocol+ " de su protocolo.");
 	}
 
 	/**
@@ -163,8 +163,8 @@ public class Patient extends Thread {
 	 */
 	@Override
 	public void run() {
-		// TODO
-		while(this.indexProtocol <= this.getProtocol().size()) { //mientras el paciente se encuentre en un punto del protocolo menor al total de protocolos o el final
+		// HECHO
+		while(this.indexProtocol < this.getProtocol().size()) { //mientras el paciente se encuentre en un punto del protocolo menor al total de protocolos o el final
 			this.attendedAtLocation();
 			this.advanceProtocol();
 		} //Se sale del bucle tras el útimo Transfer del protocolo
