@@ -115,8 +115,43 @@ public class FASTAReaderThreads {
 	 *         pattern in the data.
 	 */
 	public List<Integer> search(byte[] pattern) {
-		// TODO
-		return null;
+		// HECHO
+		List<Integer> initialPositionsTotal = new ArrayList<Integer>(); //Creo la lista a devolver (con el resultado de todos los threads)
+		try {
+			int cores = Runtime.getRuntime().availableProcessors(); //obtengo el número de procesadores de mi ordenador
+			System.out.println("Tu ordenador tiene "+cores+ " procesadores.");
+			//Creo el servicio de ejecución de Threads con tantos threads como cores tiene mi ordenador
+			ExecutorService executor = Executors.newFixedThreadPool(cores);
+			
+			//Creo lista de "futuros" con tmño el numero de cores
+			Future<List<Integer>>[] futureListTotal = new Future[cores]; //IMPORTANTE DIF
+			
+			//Creo las tareas, se las mando al ExecutorService: para tantas tareas como cores tengo.	
+			for(int i=1; i <= cores; i++) { //CUIDADO CON LA CONDICION DEL FOR, yo empiezo en 1
+				//Reparto el genoma en tantos segmentos como cores tengo, defino limite inferior y superior del segmento correspondiente a cada tarea:
+				int lo = (i-1)*(content.length/cores);
+				int hi = i*(content.length/cores); //estoy creando intervalo [ ] pero en el bucle del call llego hasta i<hi
+				Callable<List<Integer>> taskI = new FASTASearchCallable(this, lo, hi, pattern);
+				Future<List<Integer>> futureListSegment = executor.submit(taskI);
+				futureListTotal[i-1] = futureListSegment; //añado el futuro de esta tarea al array de futuros totales
+			}
+			//Pido y recojo los resultados: (mejor hacerlo en otro bucle para que el código no se pare justo después de submit, así se mandan todas las tareas primero, y luego recojo todas.
+			for (int i = 0; i<futureListTotal.length; i++) {
+				List<Integer> listSegment = futureListTotal[i].get(); //Inicializo la lista que me va a devolver la tarea
+				if (listSegment != null) { //me aseguro de que ha obtenido el resultado
+					for (Integer indice: listSegment) {
+						initialPositionsTotal.add(indice); //añado todas las posiciones que ha encontrado este thread a la lista de RESULTADO TOTAL
+					}	
+				}
+			//Forma de hacerlo en una línea:
+				//initialPositionsTotal.addAll(futureListTotal[i].get()); AÑADE TODOS LOS ELEMS DE LA LISTA DE CADA THREAD
+			}
+			executor.shutdown(); //cierra el ExecutorService
+		} catch (Exception e) {
+			System.out.println ("Task was interrupted: " + e.getMessage());
+		}
+		
+		return initialPositionsTotal;
 	}
 
 	public static void main(String[] args) {

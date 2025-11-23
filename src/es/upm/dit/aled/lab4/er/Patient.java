@@ -149,8 +149,8 @@ public class Patient extends Thread {
 	private void attendedAtLocation() {
 		// HECHO
 		try {
-			sleep (this.getLocation().getTime()); //paramos el thread el tiempo correspondiente al área donde se encuentra el paciente
-		} catch (InterruptedException e){
+			sleep (this.location.getTime()); //paramos el thread el tiempo correspondiente al área donde se encuentra el paciente
+		} catch (InterruptedException e){ //No hace falta usar getLocation porque estamos dentro de la clase en la que está definido el atributo location
 			e.printStackTrace();
 		}
 			

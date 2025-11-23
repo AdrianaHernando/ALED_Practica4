@@ -125,6 +125,7 @@ public class EmergencyRoom {
 	public void admit(Patient patient) {
 		// HECHO
 		patient.start(); //Ejecuta el metodo run() del patient: realiza su protocolo completo.
+		System.out.println("Patient " + patient.getNumber() + " has been admitted.");
 	}
 
 	/**
@@ -137,6 +138,7 @@ public class EmergencyRoom {
 		try {
 			// Espero a que termine el thread del paciente: cuando acabe el run().
 			patient.join(); 
+			System.out.println("Patient " + patient.getNumber() + " has been discharged.");
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
